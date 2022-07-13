@@ -27,8 +27,17 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+    //add below maven section in repositories.
+    maven { url 'http://dl.bintray.com/amulyakhare/maven'
+    allowInsecureProtocol(true)}
+}
+
 dependencies {
 
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    implementation 'com.karumi:dexter:6.2.2'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
