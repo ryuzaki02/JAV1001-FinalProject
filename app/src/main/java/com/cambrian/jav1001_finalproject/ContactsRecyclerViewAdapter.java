@@ -32,10 +32,17 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
         return new ContactsRecyclerViewAdapter.ViewHolder(LayoutInflater.from(context).inflate(R.layout.contact_recycler_view_item, parent, false));
     }
 
+    public void filterList(ArrayList<ContactModel> filterList) {
+        // on below line we are passing filtered
+        // array list in our original array list
+        contactModels = filterList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ContactsRecyclerViewAdapter.ViewHolder holder, int position) {
         ContactModel model = contactModels.get(position);
-        holder.contactTextView.setText(model.getNumber());
+        holder.contactTextView.setText(model.getName());
         Random rnd = new Random();
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 
