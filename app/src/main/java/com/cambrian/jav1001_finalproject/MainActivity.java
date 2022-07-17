@@ -1,9 +1,11 @@
 package com.cambrian.jav1001_finalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -11,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -31,9 +35,18 @@ public class MainActivity extends AppCompatActivity {
         contactModels.add(new ContactModel("Aman", "1234555", "a@a.com"));
         contactModels.add(new ContactModel("Roll", "9998", "b@b.com"));
 
-        contactsRecyclerView = findViewById(R.id.contactsRecyclerView);
+        contactsRecyclerView = findViewById(R.id.idContactsRecyclerView);
 
         setupContactsRecyclerView();
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.idAddContactButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent createNewContactIntent = new Intent(MainActivity.this, CreateNewContactActivity.class);
+                startActivity(createNewContactIntent);
+            }
+        });
     }
 
     private void setupContactsRecyclerView() {
