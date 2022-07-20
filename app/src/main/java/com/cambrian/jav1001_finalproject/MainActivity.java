@@ -1,7 +1,9 @@
 package com.cambrian.jav1001_finalproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,8 +11,14 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,37 +28,57 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<ContactModel> contactModels;
+    //private MutableLiveData<ArrayList<ContactModel>> contactModels = new MutableLiveData<ArrayList<ContactModel>>();
+    private ArrayList<ContactModel> contactModels = new ArrayList<ContactModel>();
     private RecyclerView contactsRecyclerView;
     private ContactsRecyclerViewAdapter contactsRecyclerViewAdapter;
+    private ContactsViewModel viewModel = new ContactsViewModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+
+                        }
+                    }
+                });
+
         this.getSupportActionBar().setTitle("Contacts");
 
-        contactModels = new ArrayList<ContactModel>();
-        contactModels.add(new ContactModel("Aman", "1234555", "a@a.com"));
-        contactModels.add(new ContactModel("Roll", "9998", "b@b.com"));
-
         contactsRecyclerView = findViewById(R.id.idContactsRecyclerView);
-
         setupContactsRecyclerView();
+
+        contactModels.add(new ContactModel("Aman", "123123", "a@a.com"));
+        viewModel.contactModels.setValue(contactModels);
+
+        viewModel.contactModels.observe(this, new Observer<ArrayList<ContactModel>>() {
+            @Override
+            public void onChanged(ArrayList<ContactModel> contactModels) {
+                contactsRecyclerViewAdapter.notifyDataSetChanged();
+            }
+        });
 
         FloatingActionButton floatingActionButton = findViewById(R.id.idAddContactButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent createNewContactIntent = new Intent(MainActivity.this, CreateNewContactActivity.class);
-                startActivity(createNewContactIntent);
+                someActivityResultLauncher.launch(createNewContactIntent);
             }
         });
     }
 
     private void setupContactsRecyclerView() {
-        contactsRecyclerViewAdapter = new ContactsRecyclerViewAdapter(this, contactModels);
+        contactsRecyclerViewAdapter = new ContactsRecyclerViewAdapter(this, viewModel);
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         contactsRecyclerView.setAdapter(contactsRecyclerViewAdapter);
     }
@@ -78,9 +106,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Aman", String.valueOf(resultCode));
+    }
+
     private void filterContactList(String text) {
         ArrayList<ContactModel> filteredContactList = new ArrayList<ContactModel>();
-        for (ContactModel model : contactModels) {
+        for (ContactModel model : viewModel.getContacts()) {
             if (model.getName().toLowerCase().contains(text.toLowerCase())) {
                 filteredContactList.add(model);
             }

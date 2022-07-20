@@ -1,8 +1,8 @@
 package com.cambrian.jav1001_finalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,11 +27,20 @@ public class CreateNewContactActivity extends AppCompatActivity {
         lastNameEditText = findViewById(R.id.idEnterLastNameEditText);
         phoneEditText = findViewById(R.id.idEnterPhoneEditText);
         emailEditText = findViewById(R.id.idEnterEmailEditText);
+
+//        Bundle bundle = getIntent().getExtras();
+//        viewModel = (ContactsViewModel) getIntent().getSerializableExtra("ContactModels");
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            finish();
+        } else if (item.getItemId() == R.id.idSaveContact) {
+            ContactModel x = new ContactModel("Abc", "123123", "b@b.com");
+            Intent dataPassIntent = new Intent();
+            dataPassIntent.putExtra("ContactModel", x);
+            setResult(200, dataPassIntent);
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -39,17 +48,7 @@ public class CreateNewContactActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.tick_menu, menu);
-
-//        MenuItem saveItem = menu.findItem(R.id.idSaveContact);
-//        final ImageButton saveButton = (ImageButton) MenuItemCompat.getActionView(saveItem);
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+        getMenuInflater().inflate(R.menu.tick_menu, menu);
         return true;
     }
 }

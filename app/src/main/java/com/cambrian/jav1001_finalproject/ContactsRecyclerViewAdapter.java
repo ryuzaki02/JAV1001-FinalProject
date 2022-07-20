@@ -19,11 +19,11 @@ import java.util.Random;
 public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRecyclerViewAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<ContactModel> contactModels;
+    private ContactsViewModel viewModel;
 
-    public ContactsRecyclerViewAdapter(Context context, ArrayList<ContactModel> contactModels) {
+    public ContactsRecyclerViewAdapter(Context context, ContactsViewModel viewModel) {
         this.context = context;
-        this.contactModels = contactModels;
+        this.viewModel = viewModel;
     }
 
     @NonNull
@@ -35,13 +35,13 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
     public void filterList(ArrayList<ContactModel> filterList) {
         // on below line we are passing filtered
         // array list in our original array list
-        contactModels = filterList;
+        viewModel.contactModels.setValue(filterList);
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContactsRecyclerViewAdapter.ViewHolder holder, int position) {
-        ContactModel model = contactModels.get(position);
+        ContactModel model = viewModel.getContacts().get(position);
         holder.contactTextView.setText(model.getName());
         Random rnd = new Random();
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
@@ -70,7 +70,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
 
     @Override
     public int getItemCount() {
-        return contactModels.size();
+        return viewModel.getContacts().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

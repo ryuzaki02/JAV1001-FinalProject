@@ -1,6 +1,8 @@
 package com.cambrian.jav1001_finalproject;
 
-public class ContactModel {
+import java.io.Serializable;
+
+public class ContactModel implements Serializable {
     private String name;
     private String number;
     private String email;
