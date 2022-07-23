@@ -1,10 +1,26 @@
 package com.cambrian.jav1001_finalproject;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
+@Entity(tableName = "contact_table")
 public class ContactModel implements Serializable {
+
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "id")
+    private int contactId;
+    @NonNull
+    @ColumnInfo(name = "name")
     private String name;
+    @ColumnInfo(name = "number")
     private String number;
+    @ColumnInfo(name = "email")
     private String email;
 
     public ContactModel(String name, String number, String email) {

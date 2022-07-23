@@ -37,10 +37,10 @@ public class CreateNewContactActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.idSaveContact) {
-            ContactModel x = new ContactModel("Abc", "123123", "b@b.com");
+            ContactModel newContact = new ContactModel("Abc", "123123", "b@b.com");
             Intent dataPassIntent = new Intent();
-            dataPassIntent.putExtra("ContactModel", x);
-            setResult(200, dataPassIntent);
+            dataPassIntent.putExtra("ContactModel", newContact);
+            setResult(RESULT_OK, dataPassIntent);
             finish();
         }
         return super.onOptionsItemSelected(item);
