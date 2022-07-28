@@ -1,14 +1,43 @@
 package com.cambrian.jav1001_finalproject;
 
-import androidx.lifecycle.MutableLiveData;
+import android.app.Application;
+import android.os.AsyncTask;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
-public class ContactsViewModel implements Serializable {
-    public MutableLiveData<ArrayList<ContactModel>> contactModels = new MutableLiveData<ArrayList<ContactModel>>();
+import java.util.List;
 
-    public ArrayList<ContactModel> getContacts() {
-        return contactModels.getValue();
+public class ContactsViewModel extends AndroidViewModel {
+    private ContactDao contactDao;
+    private LiveData<List<ContactModel>> contactModels;
+    public List<ContactModel> filteredContactModels;
+
+    public ContactsViewModel(Application application) {
+        super(application);
+        ContactRoomDatabase db = ContactRoomDatabase.getDatabase(application);
+        contactDao = db.contactDao();
+        contactModels = contactDao.getAllContacts();
+    }
+
+    LiveData<List<ContactModel>> getAllContacts() {
+        return contactModels;
+    }
+
+    public void insert (ContactModel contactModel) {
+        new insertAsyncTask(contactDao).execute(contactModel);
+    }
+
+    private static class insertAsyncTask extends AsyncTask<ContactModel, Void, Void> {
+        private ContactDao asyncTaskDao;
+        insertAsyncTask(ContactDao dao) {
+            asyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final ContactModel... params) {
+            asyncTaskDao.insert(params[0]);
+            return null;
+        }
     }
 }

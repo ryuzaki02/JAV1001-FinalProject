@@ -13,17 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRecyclerViewAdapter.ViewHolder> {
 
     private Context context;
-    private ContactsViewModel viewModel;
+    private List<ContactModel> contactModels;
 
-    public ContactsRecyclerViewAdapter(Context context, ContactsViewModel viewModel) {
+    public ContactsRecyclerViewAdapter(Context context) {
         this.context = context;
-        this.viewModel = viewModel;
     }
 
     @NonNull
@@ -32,16 +31,14 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
         return new ContactsRecyclerViewAdapter.ViewHolder(LayoutInflater.from(context).inflate(R.layout.contact_recycler_view_item, parent, false));
     }
 
-    public void filterList(ArrayList<ContactModel> filterList) {
-        // on below line we are passing filtered
-        // array list in our original array list
-        viewModel.contactModels.setValue(filterList);
+    public void setContactModels(List<ContactModel> contactModels) {
+        this.contactModels = contactModels;
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(@NonNull ContactsRecyclerViewAdapter.ViewHolder holder, int position) {
-        ContactModel model = viewModel.getContacts().get(position);
+        ContactModel model = contactModels.get(position);
         holder.contactTextView.setText(model.getName());
         Random rnd = new Random();
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
@@ -70,7 +67,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
 
     @Override
     public int getItemCount() {
-        return viewModel.getContacts().size();
+        return contactModels == null ? 0 : contactModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

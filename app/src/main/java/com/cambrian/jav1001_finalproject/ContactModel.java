@@ -1,10 +1,10 @@
 package com.cambrian.jav1001_finalproject;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
@@ -51,5 +51,13 @@ public class ContactModel implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getContactId() {
+        return this.contactId;
+    }
+
+    public void setContactId(int id) {
+        this.contactId = contactId;
     }
 }

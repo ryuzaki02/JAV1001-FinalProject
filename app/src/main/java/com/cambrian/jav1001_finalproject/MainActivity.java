@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -19,25 +18,39 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     //private MutableLiveData<ArrayList<ContactModel>> contactModels = new MutableLiveData<ArrayList<ContactModel>>();
-    private ArrayList<ContactModel> contactModels = new ArrayList<ContactModel>();
     private RecyclerView contactsRecyclerView;
     private ContactsRecyclerViewAdapter contactsRecyclerViewAdapter;
-    private ContactsViewModel viewModel = new ContactsViewModel();
+    private ContactsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.getSupportActionBar().setTitle("Contacts");
+
+        viewModel = ViewModelProviders.of(this).get(ContactsViewModel.class);
+        viewModel.getAllContacts().observe(this, new Observer<List<ContactModel>>() {
+            @Override
+            public void onChanged(@Nullable List<ContactModel> contactModels) {
+                Log.d("Aman", "----------blah blah");
+                contactsRecyclerViewAdapter.setContactModels(viewModel.getAllContacts().getValue());
+            }
+        });
+
+        contactsRecyclerView = findViewById(R.id.idContactsRecyclerView);
+        setupContactsRecyclerView();
+
 
         ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -52,33 +65,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        this.getSupportActionBar().setTitle("Contacts");
-
-        contactsRecyclerView = findViewById(R.id.idContactsRecyclerView);
-        setupContactsRecyclerView();
-
-        contactModels.add(new ContactModel("Aman", "123123", "a@a.com"));
-        viewModel.contactModels.setValue(contactModels);
-
-        viewModel.contactModels.observe(this, new Observer<ArrayList<ContactModel>>() {
-            @Override
-            public void onChanged(ArrayList<ContactModel> contactModels) {
-                contactsRecyclerViewAdapter.notifyDataSetChanged();
-            }
-        });
-
         FloatingActionButton floatingActionButton = findViewById(R.id.idAddContactButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent createNewContactIntent = new Intent(MainActivity.this, CreateNewContactActivity.class);
-                someActivityResultLauncher.launch(createNewContactIntent);
+//                Intent createNewContactIntent = new Intent(MainActivity.this, CreateNewContactActivity.class);
+//                someActivityResultLauncher.launch(createNewContactIntent);
+
+                viewModel.insert(new ContactModel("aaa", "12312321", "a@gmail.com"));
             }
         });
     }
 
     private void setupContactsRecyclerView() {
-        contactsRecyclerViewAdapter = new ContactsRecyclerViewAdapter(this, viewModel);
+        contactsRecyclerViewAdapter = new ContactsRecyclerViewAdapter(this);
+        contactsRecyclerViewAdapter.setContactModels(viewModel.getAllContacts().getValue());
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         contactsRecyclerView.setAdapter(contactsRecyclerViewAdapter);
     }
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                filterContactList(s.toLowerCase());
+                //filterContactList(s.toLowerCase());
                 return false;
             }
         });
@@ -112,19 +113,24 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Aman", String.valueOf(resultCode));
     }
 
-    private void filterContactList(String text) {
-        ArrayList<ContactModel> filteredContactList = new ArrayList<ContactModel>();
-        for (ContactModel model : viewModel.getContacts()) {
-            if (model.getName().toLowerCase().contains(text.toLowerCase())) {
-                filteredContactList.add(model);
-            }
-        }
-        // on below line we are checking if the filtered list is empty or not.
-        if (filteredContactList.isEmpty()) {
-            Toast.makeText(this, "No Contact Found", Toast.LENGTH_SHORT).show();
-        } else {
-            // passing this filtered list to our adapter with filter list method.
-            contactsRecyclerViewAdapter.filterList(filteredContactList);
-        }
-    }
+//    @Override
+//    public void onPointerCaptureChanged(boolean hasCapture) {
+//        super.onPointerCaptureChanged(hasCapture);
+//    }
+
+//    private void filterContactList(String text) {
+//        ArrayList<ContactModel> filteredContactList = new ArrayList<ContactModel>();
+//        for (ContactModel model : viewModel.getContacts()) {
+//            if (model.getName().toLowerCase().contains(text.toLowerCase())) {
+//                filteredContactList.add(model);
+//            }
+//        }
+//        // on below line we are checking if the filtered list is empty or not.
+//        if (filteredContactList.isEmpty()) {
+//            Toast.makeText(this, "No Contact Found", Toast.LENGTH_SHORT).show();
+//        } else {
+//            // passing this filtered list to our adapter with filter list method.
+//            contactsRecyclerViewAdapter.filterList(filteredContactList);
+//        }
+//    }
 }

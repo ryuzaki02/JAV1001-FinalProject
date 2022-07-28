@@ -1,14 +1,15 @@
 package com.cambrian.jav1001_finalproject;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 @Database(entities = {ContactModel.class}, version = 1, exportSchema = false)
 public abstract class ContactRoomDatabase extends RoomDatabase {
 
-    public abstract ContactDao wordDao();
+    public abstract ContactDao contactDao();
     private static ContactRoomDatabase INSTANCE;
 
     static ContactRoomDatabase getDatabase(final Context context) {
