@@ -1,6 +1,5 @@
 package com.cambrian.jav1001_finalproject;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +17,13 @@ import java.util.Random;
 
 public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRecyclerViewAdapter.ViewHolder> {
 
-    private Context context;
+    private MainActivity context;
     private List<ContactModel> contactModels;
+    private ContactsRecyclerViewAdapterInterface adapterInterface;
 
-    public ContactsRecyclerViewAdapter(Context context) {
+    public ContactsRecyclerViewAdapter(MainActivity context) {
         this.context = context;
+        adapterInterface = context;
     }
 
     @NonNull
@@ -36,10 +37,17 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
         notifyDataSetChanged();
     }
 
+    public void deleteItem(int position) {
+        final ContactModel deletedContact = contactModels.get(position);
+        contactModels.remove(position);
+        adapterInterface.deleteContact(deletedContact);
+        notifyItemRemoved(position);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ContactsRecyclerViewAdapter.ViewHolder holder, int position) {
         ContactModel model = contactModels.get(position);
-        holder.contactTextView.setText(model.getName());
+        holder.contactTextView.setText(model.getFirstName() + " " + model.getLastName());
         Random rnd = new Random();
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 
@@ -48,7 +56,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
                 .width(100)  // width in px
                 .height(100) // height in px
                 .endConfig()
-                .buildRound(model.getName().substring(0, 1), color);
+                .buildRound((model.getFirstName().substring(0, 1) + model.getLastName().substring(0, 1)), color);
         // setting image to our image view on below line.
         holder.contactImageView.setImageDrawable(textDrawable);
         // on below line we are adding on click listener to our item of recycler view.

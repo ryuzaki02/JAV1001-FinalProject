@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ContactsRecyclerViewAdapterInterface {
 
     //private MutableLiveData<ArrayList<ContactModel>> contactModels = new MutableLiveData<ArrayList<ContactModel>>();
     private RecyclerView contactsRecyclerView;
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getAllContacts().observe(this, new Observer<List<ContactModel>>() {
             @Override
             public void onChanged(@Nullable List<ContactModel> contactModels) {
-                Log.d("Aman", "----------blah blah");
                 contactsRecyclerViewAdapter.setContactModels(viewModel.getAllContacts().getValue());
             }
         });
@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             // There are no request codes
                             Intent data = result.getData();
-
+                            final ContactModel model = (ContactModel) data.getSerializableExtra(getString(R.string.new_contact_model));
+                            viewModel.insert(model);
                         }
                     }
                 });
@@ -69,10 +70,9 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent createNewContactIntent = new Intent(MainActivity.this, CreateNewContactActivity.class);
-//                someActivityResultLauncher.launch(createNewContactIntent);
-
-                viewModel.insert(new ContactModel("aaa", "12312321", "a@gmail.com"));
+                Intent createNewContactIntent = new Intent(MainActivity.this, CreateNewContactActivity.class);
+                someActivityResultLauncher.launch(createNewContactIntent);
+//                viewModel.insert(new ContactModel("aaa", "12312321", "a@gmail.com"));
             }
         });
     }
@@ -80,8 +80,11 @@ public class MainActivity extends AppCompatActivity {
     private void setupContactsRecyclerView() {
         contactsRecyclerViewAdapter = new ContactsRecyclerViewAdapter(this);
         contactsRecyclerViewAdapter.setContactModels(viewModel.getAllContacts().getValue());
-        contactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         contactsRecyclerView.setAdapter(contactsRecyclerViewAdapter);
+        contactsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(new SwipeToDeleteCallback(contactsRecyclerViewAdapter));
+        itemTouchHelper.attachToRecyclerView(contactsRecyclerView);
     }
 
     @Override
@@ -111,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("Aman", String.valueOf(resultCode));
+    }
+
+    @Override
+    public void deleteContact(ContactModel contactModel) {
+        viewModel.delete(contactModel);
     }
 
 //    @Override

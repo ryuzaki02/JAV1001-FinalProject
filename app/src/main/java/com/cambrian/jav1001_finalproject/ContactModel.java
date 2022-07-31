@@ -13,28 +13,39 @@ public class ContactModel implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    @ColumnInfo(name = "id")
-    private int contactId;
+    public int id;
     @NonNull
-    @ColumnInfo(name = "name")
-    private String name;
+    @ColumnInfo(name = "first_name")
+    private String firstName;
+    @NonNull
+    @ColumnInfo(name = "last_name")
+    private String lastName;
     @ColumnInfo(name = "number")
     private String number;
     @ColumnInfo(name = "email")
     private String email;
 
-    public ContactModel(String name, String number, String email) {
-        this.name = name;
+    public ContactModel(String firstName, String lastName, String number, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.number = number;
         this.email = email;
     }
 
-    public String getName() {
-        return this.name;
+    public String getFirstName() {
+        return this.firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public void setLastName(String name) {
+        this.lastName = name;
     }
 
     public String getNumber() {
@@ -51,13 +62,5 @@ public class ContactModel implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public int getContactId() {
-        return this.contactId;
-    }
-
-    public void setContactId(int id) {
-        this.contactId = contactId;
     }
 }

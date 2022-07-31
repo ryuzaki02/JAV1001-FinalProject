@@ -37,11 +37,13 @@ public class CreateNewContactActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.idSaveContact) {
-            ContactModel newContact = new ContactModel("Abc", "123123", "b@b.com");
-            Intent dataPassIntent = new Intent();
-            dataPassIntent.putExtra("ContactModel", newContact);
-            setResult(RESULT_OK, dataPassIntent);
-            finish();
+            final ContactModel newContact = getValidContact();
+            if (newContact != null) {
+                Intent dataPassIntent = new Intent();
+                dataPassIntent.putExtra("NewContactModel", newContact);
+                setResult(RESULT_OK, dataPassIntent);
+                finish();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -50,5 +52,29 @@ public class CreateNewContactActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.tick_menu, menu);
         return true;
+    }
+
+    private ContactModel getValidContact() {
+        final EditText firstNameEditText = (EditText) findViewById(R.id.idEnterFirstNameEditText);
+        final EditText lastNameEditText = findViewById(R.id.idEnterLastNameEditText);
+        final EditText phoneEditText = findViewById(R.id.idEnterPhoneEditText);
+        final EditText emailEditText = findViewById(R.id.idEnterEmailEditText);
+
+        EditText []editTexts = new EditText[4];
+        editTexts[0] = firstNameEditText;
+        editTexts[1] = lastNameEditText;
+        editTexts[2] = phoneEditText;
+        editTexts[3] = emailEditText;
+
+        for (EditText et:
+             editTexts) {
+            if (et.getText().toString().isEmpty()) {
+                final String text = et == firstNameEditText ? "First name" : (et == lastNameEditText ? "Last name" : (et == phoneEditText ? "Phone number" : "Email"));
+                final String errorString = (text + " should not be empty");
+                Dialog.instance.showDialog(this, errorString,false, "", null);
+                return null;
+            }
+        }
+        return new ContactModel(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), phoneEditText.getText().toString(), emailEditText.getText().toString());
     }
 }
