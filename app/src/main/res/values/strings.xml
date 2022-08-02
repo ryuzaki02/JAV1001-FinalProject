@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">JAV1001-FinalProject</string>
     <string name="done">Done</string>
-    <string name="new_contact_model">NewContactModel</string>
+    <string name="result_ok_new">0</string>
+    <string name="result_ok_update">0</string>
 </resources>

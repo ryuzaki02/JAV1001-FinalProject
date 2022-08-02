@@ -1,6 +1,5 @@
 package com.cambrian.jav1001_finalproject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements ContactsRecyclerV
     private RecyclerView contactsRecyclerView;
     private ContactsRecyclerViewAdapter contactsRecyclerViewAdapter;
     private ContactsViewModel viewModel;
+    private ActivityResultLauncher<Intent> createNewContactActivityLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +51,14 @@ public class MainActivity extends AppCompatActivity implements ContactsRecyclerV
         contactsRecyclerView = findViewById(R.id.idContactsRecyclerView);
         setupContactsRecyclerView();
 
-
-        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            final ContactModel model = (ContactModel) data.getSerializableExtra(getString(R.string.new_contact_model));
-                            viewModel.insert(model);
-                        }
-                    }
-                });
+        setupActivityLauncher();
 
         FloatingActionButton floatingActionButton = findViewById(R.id.idAddContactButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent createNewContactIntent = new Intent(MainActivity.this, CreateNewContactActivity.class);
-                someActivityResultLauncher.launch(createNewContactIntent);
-//                viewModel.insert(new ContactModel("aaa", "12312321", "a@gmail.com"));
+                createNewContactActivityLauncher.launch(createNewContactIntent);
             }
         });
     }
@@ -85,6 +71,27 @@ public class MainActivity extends AppCompatActivity implements ContactsRecyclerV
         ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new SwipeToDeleteCallback(contactsRecyclerViewAdapter));
         itemTouchHelper.attachToRecyclerView(contactsRecyclerView);
+    }
+
+    private void setupActivityLauncher() {
+        createNewContactActivityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == R.string.result_ok_new) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            final ContactModel model = (ContactModel) data.getSerializableExtra("NewContactModel");
+                            viewModel.insert(model);
+                        } else if (result.getResultCode() == R.string.result_ok_update) {
+                            Intent data = result.getData();
+                            final ContactModel model = (ContactModel) data.getSerializableExtra("NewContactModel");
+                            viewModel.delete(model);
+                            viewModel.insert(model);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -121,7 +128,14 @@ public class MainActivity extends AppCompatActivity implements ContactsRecyclerV
         viewModel.delete(contactModel);
     }
 
-//    @Override
+    @Override
+    public void contactDidTap(ContactModel contactModel) {
+        Intent viewContactIntent = new Intent(MainActivity.this, ViewContactActivity.class);
+        viewContactIntent.putExtra("ContactModel", contactModel);
+        createNewContactActivityLauncher.launch(viewContactIntent);
+    }
+
+    //    @Override
 //    public void onPointerCaptureChanged(boolean hasCapture) {
 //        super.onPointerCaptureChanged(hasCapture);
 //    }

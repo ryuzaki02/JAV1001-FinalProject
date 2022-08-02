@@ -13,6 +13,7 @@ public class CreateNewContactActivity extends AppCompatActivity {
 
     private EditText firstNameEditText, lastNameEditText, phoneEditText, emailEditText;
     private Button addContactButton;
+    private ContactModel contactModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +29,18 @@ public class CreateNewContactActivity extends AppCompatActivity {
         phoneEditText = findViewById(R.id.idEnterPhoneEditText);
         emailEditText = findViewById(R.id.idEnterEmailEditText);
 
-//        Bundle bundle = getIntent().getExtras();
-//        viewModel = (ContactsViewModel) getIntent().getSerializableExtra("ContactModels");
+        setupView();
+    }
+
+    private void setupView() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            contactModel = (ContactModel) getIntent().getSerializableExtra("ContactModel");
+            firstNameEditText.setText(contactModel.getFirstName());
+            lastNameEditText.setText(contactModel.getLastName());
+            phoneEditText.setText(contactModel.getNumber());
+            emailEditText.setText(contactModel.getEmail());
+        }
     }
 
     @Override
@@ -41,7 +52,7 @@ public class CreateNewContactActivity extends AppCompatActivity {
             if (newContact != null) {
                 Intent dataPassIntent = new Intent();
                 dataPassIntent.putExtra("NewContactModel", newContact);
-                setResult(RESULT_OK, dataPassIntent);
+                setResult(contactModel == null ? R.string.result_ok_new : R.string.result_ok_update, dataPassIntent);
                 finish();
             }
         }
@@ -75,6 +86,15 @@ public class CreateNewContactActivity extends AppCompatActivity {
                 return null;
             }
         }
-        return new ContactModel(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), phoneEditText.getText().toString(), emailEditText.getText().toString());
+        if (contactModel == null) {
+            return new ContactModel(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), phoneEditText.getText().toString(), emailEditText.getText().toString());
+        } else {
+            contactModel.setFirstName(firstNameEditText.getText().toString());
+            contactModel.setLastName(lastNameEditText.getText().toString());
+            contactModel.setEmail(emailEditText.getText().toString());
+            contactModel.setNumber(phoneEditText.getText().toString());
+            return contactModel;
+        }
+
     }
 }

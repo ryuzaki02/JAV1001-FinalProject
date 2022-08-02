@@ -63,6 +63,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                adapterInterface.contactDidTap(model);
                 // on below line we are opening a new activity and passing data to it.
 //                Intent i = new Intent(context, ContactDetailActivity.class);
 //                i.putExtra("name", modal.getUserName());
