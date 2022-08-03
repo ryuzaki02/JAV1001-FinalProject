@@ -2,7 +2,6 @@ package com.cambrian.jav1001_finalproject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,11 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ContactsRecyclerViewAdapterInterface {
 
-    //private MutableLiveData<ArrayList<ContactModel>> contactModels = new MutableLiveData<ArrayList<ContactModel>>();
     private RecyclerView contactsRecyclerView;
     private ContactsRecyclerViewAdapter contactsRecyclerViewAdapter;
     private ContactsViewModel viewModel;
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements ContactsRecyclerV
 
             @Override
             public boolean onQueryTextChange(String s) {
-                //filterContactList(s.toLowerCase());
+                filterContactList(s.toLowerCase());
                 return false;
             }
         });
@@ -120,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements ContactsRecyclerV
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("Aman", String.valueOf(resultCode));
     }
 
     @Override
@@ -135,24 +133,15 @@ public class MainActivity extends AppCompatActivity implements ContactsRecyclerV
         createNewContactActivityLauncher.launch(viewContactIntent);
     }
 
-    //    @Override
-//    public void onPointerCaptureChanged(boolean hasCapture) {
-//        super.onPointerCaptureChanged(hasCapture);
-//    }
-
-//    private void filterContactList(String text) {
-//        ArrayList<ContactModel> filteredContactList = new ArrayList<ContactModel>();
-//        for (ContactModel model : viewModel.getContacts()) {
-//            if (model.getName().toLowerCase().contains(text.toLowerCase())) {
-//                filteredContactList.add(model);
-//            }
-//        }
-//        // on below line we are checking if the filtered list is empty or not.
-//        if (filteredContactList.isEmpty()) {
-//            Toast.makeText(this, "No Contact Found", Toast.LENGTH_SHORT).show();
-//        } else {
-//            // passing this filtered list to our adapter with filter list method.
-//            contactsRecyclerViewAdapter.filterList(filteredContactList);
-//        }
-//    }
+    private void filterContactList(String text) {
+        List<ContactModel> filteredModels = new ArrayList<ContactModel>();
+        for (ContactModel model:
+             viewModel.getAllContacts().getValue()) {
+            final String fullName = model.getFirstName() + " " + model.getLastName();
+            if (fullName.toLowerCase().contains(text.toLowerCase())) {
+                filteredModels.add(model);
+            }
+        }
+        contactsRecyclerViewAdapter.setContactModels(text.isEmpty() ? viewModel.getAllContacts().getValue() : filteredModels);
+    }
 }

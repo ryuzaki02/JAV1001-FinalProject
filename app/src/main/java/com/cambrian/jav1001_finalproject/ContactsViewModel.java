@@ -11,7 +11,6 @@ import java.util.List;
 public class ContactsViewModel extends AndroidViewModel {
     private ContactDao contactDao;
     private LiveData<List<ContactModel>> contactModels;
-    public List<ContactModel> filteredContactModels;
 
     public ContactsViewModel(Application application) {
         super(application);
@@ -30,6 +29,10 @@ public class ContactsViewModel extends AndroidViewModel {
 
     public void delete (ContactModel contactModel) {
         new deleteAsyncTask(contactDao).execute(contactModel);
+    }
+
+    public LiveData<List<ContactModel>> search (String searchText) {
+        return contactDao.getContacts(searchText);
     }
 
     private static class insertAsyncTask extends AsyncTask<ContactModel, Void, Void> {

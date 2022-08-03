@@ -1,5 +1,7 @@
 package com.cambrian.jav1001_finalproject;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,28 +50,27 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
     public void onBindViewHolder(@NonNull ContactsRecyclerViewAdapter.ViewHolder holder, int position) {
         ContactModel model = contactModels.get(position);
         holder.contactTextView.setText(model.getFirstName() + " " + model.getLastName());
-        Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        if (model.getContactImage() == null || model.getContactImage().length == 0) {
+            Random rnd = new Random();
+            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 
-        // below text drawable is a circular.
-        TextDrawable textDrawable = TextDrawable.builder().beginConfig()
-                .width(100)  // width in px
-                .height(100) // height in px
-                .endConfig()
-                .buildRound((model.getFirstName().substring(0, 1) + model.getLastName().substring(0, 1)), color);
-        // setting image to our image view on below line.
-        holder.contactImageView.setImageDrawable(textDrawable);
+            // below text drawable is a circular.
+            TextDrawable textDrawable = TextDrawable.builder().beginConfig()
+                    .width(100)  // width in px
+                    .height(100) // height in px
+                    .endConfig()
+                    .buildRound((model.getFirstName().substring(0, 1) + model.getLastName().substring(0, 1)), color);
+            // setting image to our image view on below line.
+            holder.contactImageView.setImageDrawable(textDrawable);
+        } else {
+            Bitmap bmp = BitmapFactory.decodeByteArray(model.getContactImage(), 0, model.getContactImage().length);
+            holder.contactImageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, 1000, 1000, false));
+        }
         // on below line we are adding on click listener to our item of recycler view.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 adapterInterface.contactDidTap(model);
-                // on below line we are opening a new activity and passing data to it.
-//                Intent i = new Intent(context, ContactDetailActivity.class);
-//                i.putExtra("name", modal.getUserName());
-//                i.putExtra("contact", modal.getContactNumber());
-//                // on below line we are starting a new activity,
-//                context.startActivity(i);
             }
         });
     }

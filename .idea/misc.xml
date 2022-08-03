@@ -5,7 +5,9 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_account.xml" value="0.2115" />
         <entry key="app/src/main/res/drawable/ic_add.xml" value="0.1365" />
+        <entry key="app/src/main/res/drawable/ic_circle.xml" value="0.135" />
         <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.1365" />
+        <entry key="app/src/main/res/drawable/ic_img.xml" value="0.135" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/ic_message.xml" value="0.1795" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.2105" />

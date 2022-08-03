@@ -25,4 +25,7 @@ public interface ContactDao {
 
     @Query("SELECT * from contact_table ORDER BY first_name, last_name ASC")
     LiveData<List<ContactModel>> getAllContacts();
+
+    @Query("SELECT * from contact_table WHERE first_name LIKE :searchText ORDER BY first_name, last_name ASC")
+    LiveData<List<ContactModel>> getContacts(String searchText);
 }
