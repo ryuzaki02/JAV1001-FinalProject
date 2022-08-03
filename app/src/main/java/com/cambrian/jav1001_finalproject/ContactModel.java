@@ -24,6 +24,8 @@ public class ContactModel implements Serializable {
     private String number;
     @ColumnInfo(name = "email")
     private String email;
+    @ColumnInfo(name = "contact_image", typeAffinity = ColumnInfo.BLOB)
+    private byte[] contactImage;
 
     public ContactModel(String firstName, String lastName, String number, String email) {
         this.firstName = firstName;
@@ -63,4 +65,8 @@ public class ContactModel implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void setContactImage(byte[] contactImage) { this.contactImage = contactImage; };
+
+    public byte[] getContactImage() { return this.contactImage; };
 }

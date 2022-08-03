@@ -1,9 +1,12 @@
 package com.cambrian.jav1001_finalproject;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -17,6 +20,7 @@ public class ViewContactActivity extends AppCompatActivity {
     private TextView nameTextView, phoneTextView, emailTextView;
     private ContactModel contactModel;
     private ActivityResultLauncher<Intent> editContactActivityLauncher;
+    private ImageView contactImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +39,15 @@ public class ViewContactActivity extends AppCompatActivity {
         nameTextView = findViewById(R.id.idNameTextView);
         phoneTextView = findViewById(R.id.idPhoneTextView);
         emailTextView = findViewById(R.id.idMailTextView);
+        contactImageView = findViewById(R.id.idViewContactImageView);
 
         Bundle bundle = getIntent().getExtras();
         contactModel = (ContactModel) getIntent().getSerializableExtra("ContactModel");
         nameTextView.setText(contactModel.getFirstName() + ' ' + contactModel.getLastName());
         phoneTextView.setText(contactModel.getNumber());
         emailTextView.setText(contactModel.getEmail());
+        Bitmap bmp = BitmapFactory.decodeByteArray(contactModel.getContactImage(), 0, contactModel.getContactImage().length);
+        contactImageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, 1000, 1000, false));
     }
 
     private void setupActivityLauncher() {
