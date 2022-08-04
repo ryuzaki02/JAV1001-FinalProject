@@ -88,6 +88,10 @@ public class MainActivity extends AppCompatActivity implements ContactsRecyclerV
                             final ContactModel model = (ContactModel) data.getSerializableExtra("NewContactModel");
                             viewModel.delete(model);
                             viewModel.insert(model);
+                        } else if (result.getResultCode() == R.string.result_ok_delete) {
+                            Intent data = result.getData();
+                            final ContactModel model = (ContactModel) data.getSerializableExtra("DeleteContactModel");
+                            viewModel.delete(model);
                         }
                     }
                 });

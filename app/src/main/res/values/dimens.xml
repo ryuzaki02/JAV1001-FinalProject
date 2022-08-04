@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ContactInfoTextViewHeight">40sp</dimen>
-    <dimen name="ContactInfoTextViewMargin">10sp</dimen>
+    <dimen name="ContactInfoTextViewMargin">16sp</dimen>
+    <dimen name="ViewContactNameFont">30sp</dimen>
+    <dimen name="ViewContactInfoFont">20sp</dimen>
 </resources>

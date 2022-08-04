@@ -2,6 +2,5 @@
 <resources>
     <style name="ContactInfoText" parent="Widget.AppCompat.TextView">
         <item name="android:layout_height">@dimen/ContactInfoTextViewHeight</item>
-        <item name="android:layout_margin">@dimen/ContactInfoTextViewMargin</item>
     </style>
 </resources>

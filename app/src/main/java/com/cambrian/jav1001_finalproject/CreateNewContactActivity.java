@@ -74,8 +74,10 @@ public class CreateNewContactActivity extends AppCompatActivity {
             lastNameEditText.setText(contactModel.getLastName());
             phoneEditText.setText(contactModel.getNumber());
             emailEditText.setText(contactModel.getEmail());
-            Bitmap bmp = BitmapFactory.decodeByteArray(contactModel.getContactImage(), 0, contactModel.getContactImage().length);
-            contactImageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, 1000, 1000, false));
+            if (contactModel.getContactImage() != null) {
+                Bitmap bmp = BitmapFactory.decodeByteArray(contactModel.getContactImage(), 0, contactModel.getContactImage().length);
+                contactImageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, 1000, 1000, false));
+            }
         }
     }
 
