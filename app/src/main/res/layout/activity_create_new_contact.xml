@@ -6,59 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".CreateNewContactActivity">
 
-    <ImageView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/PlaceholderImageHeight"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
         android:id="@+id/idContactImageView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/ic_account"
-        android:background="@color/teal_700"
+        style="@style/PlaceholderImageViewStyle"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageButton
         android:id="@+id/idEditImageButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:scaleType="fitCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:src="@drawable/ic_edit"
-        android:background="@color/teal_700"
+        style="@style/ContactActionImageButton"
         app:layout_constraintBottom_toBottomOf="@id/idContactImageView"
         app:layout_constraintRight_toRightOf="@id/idContactImageView"/>
 
     <EditText
         android:id="@+id/idEnterFirstNameEditText"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:hint="First Name"
         android:inputType="text"
-        android:layout_margin="10dp"
+        style="@style/ContactInputEditTextStyle"
         app:layout_constraintTop_toBottomOf="@id/idContactImageView"/>
 
     <EditText
         android:id="@+id/idEnterLastNameEditText"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:hint="Last Name"
         android:inputType="text"
-        android:layout_margin="10dp"
+        style="@style/ContactInputEditTextStyle"
         app:layout_constraintTop_toBottomOf="@+id/idEnterFirstNameEditText"/>
 
     <EditText
         android:id="@+id/idEnterPhoneEditText"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:hint="Mobile"
         android:inputType="phone"
-        android:layout_margin="10dp"
+        style="@style/ContactInputEditTextStyle"
         app:layout_constraintTop_toBottomOf="@id/idEnterLastNameEditText"/>
 
     <EditText
         android:id="@+id/idEnterEmailEditText"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:layout_margin="10dp"
+        style="@style/ContactInputEditTextStyle"
         app:layout_constraintTop_toBottomOf="@id/idEnterPhoneEditText"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

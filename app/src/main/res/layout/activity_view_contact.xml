@@ -6,12 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".CreateNewContactActivity">
 
-    <ImageView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/PlaceholderImageHeight"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
         android:id="@+id/idViewContactImageView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/ic_account"
-        android:background="@color/teal_700"
+        style="@style/PlaceholderImageViewStyle"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
@@ -32,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/ic_phone"
-            android:backgroundTint="@color/white"/>
+            style="@style/ContactActionImageButton" />
 
         <ImageButton
             android:id="@+id/idMessageImageButton"
@@ -40,7 +43,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/ic_message"
-            android:backgroundTint="@color/white" />
+            style="@style/ContactActionImageButton" />
 
         <ImageButton
             android:id="@+id/idMailImageButton"
@@ -48,7 +51,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@drawable/ic_email"
-            android:backgroundTint="@color/white" />
+            style="@style/ContactActionImageButton" />
 
     </LinearLayout>
 
