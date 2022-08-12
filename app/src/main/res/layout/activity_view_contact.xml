@@ -6,17 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".CreateNewContactActivity">
 
+    <!--View to change theme color for image background-->
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/PlaceholderImageHeight"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--Image button to show profile picture and apply styling-->
     <ImageButton
         android:id="@+id/idViewContactImageView"
         android:layout_width="match_parent"
         style="@style/PlaceholderImageViewStyle"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <!--Linear layout to show contact call, message and mail buttons-->
     <LinearLayout
         android:id="@+id/idButtonLinearlayout"
         android:layout_marginTop="10dp"
@@ -29,6 +32,7 @@
         android:weightSum="3"
         app:layout_constraintTop_toBottomOf="@+id/idViewContactImageView">
 
+        <!--Image button for calling-->
         <ImageButton
             android:id="@+id/idPhoneImageButton"
             android:layout_width="wrap_content"
@@ -37,6 +41,7 @@
             android:src="@drawable/ic_phone"
             style="@style/ContactActionImageButton" />
 
+        <!--Image button for messaging-->
         <ImageButton
             android:id="@+id/idMessageImageButton"
             android:layout_width="wrap_content"
@@ -45,6 +50,7 @@
             android:src="@drawable/ic_message"
             style="@style/ContactActionImageButton" />
 
+        <!--Image button for mail-->
         <ImageButton
             android:id="@+id/idMailImageButton"
             android:layout_width="wrap_content"
@@ -55,6 +61,7 @@
 
     </LinearLayout>
 
+    <!--Text view to show name of contact-->
     <TextView
         android:id="@+id/idNameTextView"
         android:layout_width="wrap_content"
@@ -64,6 +71,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/idButtonLinearlayout"/>
 
+    <!--Text view to show phone number of contact-->
     <TextView
         android:id="@+id/idPhoneTextView"
         android:layout_width="wrap_content"
@@ -74,6 +82,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/idNameTextView"/>
 
+    <!--Text view to show email of contact-->
     <TextView
         android:id="@+id/idMailTextView"
         android:layout_width="wrap_content"

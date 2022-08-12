@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Style to generalise layout height of contact items text view-->
     <style name="ContactInfoText" parent="Widget.AppCompat.TextView">
         <item name="android:layout_height">@dimen/ContactInfoTextViewHeight</item>
     </style>
+    <!--Style to generalise Image Button attributes for contact profile picture-->
     <style name="PlaceholderImageViewStyle" parent="android:Widget.ImageButton">
         <item name="android:layout_height">@dimen/PlaceholderImageHeight</item>
         <item name="android:scaleType">fitCenter</item>
         <item name="android:src">@drawable/ic_account</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+    <!--Style to generalise attributes of Edit text for contact input information-->
     <style name="ContactInputEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:layout_height">@dimen/ContactInputEditTextHeight</item>
         <item name="android:layout_margin">@dimen/ContactInputEditTextLayoutMargin</item>

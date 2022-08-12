@@ -6,17 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".CreateNewContactActivity">
 
+    <!--View to change theme color for image background-->
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/PlaceholderImageHeight"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--Image button to show profile picture and apply styling-->
     <ImageButton
         android:id="@+id/idContactImageView"
         android:layout_width="match_parent"
         style="@style/PlaceholderImageViewStyle"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <!--Image button to change profile picture-->
     <ImageButton
         android:id="@+id/idEditImageButton"
         android:layout_width="wrap_content"
@@ -27,6 +30,18 @@
         app:layout_constraintBottom_toBottomOf="@id/idContactImageView"
         app:layout_constraintRight_toRightOf="@id/idContactImageView"/>
 
+    <!--Image button to delete profile picture-->
+    <ImageButton
+        android:id="@+id/idDeleteImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_delete"
+        style="@style/ContactActionImageButton"
+        app:layout_constraintBottom_toBottomOf="@id/idContactImageView"
+        app:layout_constraintLeft_toLeftOf="@id/idContactImageView"/>
+
+    <!--Edit text to add first name information-->
     <EditText
         android:id="@+id/idEnterFirstNameEditText"
         android:layout_width="match_parent"
@@ -35,6 +50,7 @@
         style="@style/ContactInputEditTextStyle"
         app:layout_constraintTop_toBottomOf="@id/idContactImageView"/>
 
+    <!--Edit text to add last name information-->
     <EditText
         android:id="@+id/idEnterLastNameEditText"
         android:layout_width="match_parent"
@@ -43,6 +59,7 @@
         style="@style/ContactInputEditTextStyle"
         app:layout_constraintTop_toBottomOf="@+id/idEnterFirstNameEditText"/>
 
+    <!--Edit text to add mobile information-->
     <EditText
         android:id="@+id/idEnterPhoneEditText"
         android:layout_width="match_parent"
@@ -51,6 +68,7 @@
         style="@style/ContactInputEditTextStyle"
         app:layout_constraintTop_toBottomOf="@id/idEnterLastNameEditText"/>
 
+    <!--Edit text to add email information-->
     <EditText
         android:id="@+id/idEnterEmailEditText"
         android:layout_width="match_parent"

@@ -7,11 +7,13 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <!--Recycler view to show contact list-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idContactsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    
+
+    <!--Floating button to add new contact-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/idAddContactButton"
         android:layout_width="wrap_content"

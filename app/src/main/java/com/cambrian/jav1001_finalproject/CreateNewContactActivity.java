@@ -26,7 +26,7 @@ import java.io.InputStream;
 public class CreateNewContactActivity extends AppCompatActivity {
 
     private EditText firstNameEditText, lastNameEditText, phoneEditText, emailEditText;
-    private ImageButton imageButton;
+    private ImageButton imageButton, deleteImageButton;
     private ImageView contactImageView;
     private Button addContactButton;
     private ContactModel contactModel;
@@ -50,9 +50,11 @@ public class CreateNewContactActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.idEnterEmailEditText);
         imageButton = findViewById(R.id.idEditImageButton);
         contactImageView = findViewById(R.id.idContactImageView);
+        deleteImageButton = findViewById(R.id.idDeleteImageButton);
 
         // Add listeners to views
         addImageButtonListener();
+        deleteImageButtonListener();
         setupActivityLauncher();
 
         setupView();
@@ -71,6 +73,23 @@ public class CreateNewContactActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 photoPickerActivityLauncher.launch(intent);
+            }
+        });
+    }
+
+    /**
+     * Setup on click listener to delete image
+     * @param: nothing
+     * @return: nothing
+     */
+    private void deleteImageButtonListener() {
+        deleteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (contactModel != null) {
+                    contactModel.setContactImage(null);
+                }
+                contactImageView.setImageResource(R.drawable.ic_account);
             }
         });
     }
