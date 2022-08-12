@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * This class handles swipe to delete action for recycler view
+ */
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private ContactsRecyclerViewAdapter adapter;
 

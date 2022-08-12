@@ -38,10 +38,12 @@ public class CreateNewContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_contact);
 
+        // Customize Action bar
         this.getSupportActionBar().setTitle("Add Contact");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        // Initialise views from their ids
         firstNameEditText = findViewById(R.id.idEnterFirstNameEditText);
         lastNameEditText = findViewById(R.id.idEnterLastNameEditText);
         phoneEditText = findViewById(R.id.idEnterPhoneEditText);
@@ -49,16 +51,23 @@ public class CreateNewContactActivity extends AppCompatActivity {
         imageButton = findViewById(R.id.idEditImageButton);
         contactImageView = findViewById(R.id.idContactImageView);
 
+        // Add listeners to views
         addImageButtonListener();
         setupActivityLauncher();
 
         setupView();
     }
 
+    /**
+     * Setup on click listener to image button
+     * @param: nothing
+     * @return: nothing
+     */
     private void addImageButtonListener() {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Opens gallery picker for profile picture
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 photoPickerActivityLauncher.launch(intent);
@@ -66,6 +75,11 @@ public class CreateNewContactActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Setup views for the activity and set data
+     * @param: nothing
+     * @return: nothing
+     */
     private void setupView() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -81,6 +95,11 @@ public class CreateNewContactActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Setup activity launcher for photo picker
+     * @param: nothing
+     * @return: nothing
+     */
     private void setupActivityLauncher() {
         photoPickerActivityLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -94,6 +113,11 @@ public class CreateNewContactActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * On options item selected listener for menus
+     * @param item: MenuItem
+     * @return: boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -110,12 +134,22 @@ public class CreateNewContactActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Setup menu for action bar
+     * @param menu: Menu
+     * @return: boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.tick_menu, menu);
         return true;
     }
 
+    /**
+     * Validates whether contact information is valid or not
+     * @param: nothing
+     * @return: ContactModel
+     */
     private ContactModel getValidContact() {
         final EditText firstNameEditText = (EditText) findViewById(R.id.idEnterFirstNameEditText);
         final EditText lastNameEditText = findViewById(R.id.idEnterLastNameEditText);
@@ -155,6 +189,11 @@ public class CreateNewContactActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Save image to current contact model
+     * @param: nothing
+     * @return: Bytes array
+     */
     public byte[] saveImageToContactModel() {
         try {
             InputStream iStream = getContentResolver().openInputStream(imageUri);
@@ -166,6 +205,11 @@ public class CreateNewContactActivity extends AppCompatActivity {
         return null;
     }
 
+    /**
+     * Provides byte array of input stream for image
+     * @param inputStream: InputStream
+     * @return: Byte arrays
+     */
     public byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;

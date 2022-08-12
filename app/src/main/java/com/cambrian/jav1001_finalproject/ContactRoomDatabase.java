@@ -12,6 +12,11 @@ public abstract class ContactRoomDatabase extends RoomDatabase {
     public abstract ContactDao contactDao();
     private static ContactRoomDatabase INSTANCE;
 
+    /**
+     * This method initialise static object of ContactRoomDatabase
+     * @param context: Context
+     * @return ContactRoomDatabase
+     */
     static ContactRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (ContactRoomDatabase.class) {

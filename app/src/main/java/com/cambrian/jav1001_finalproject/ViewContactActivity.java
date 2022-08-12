@@ -31,14 +31,21 @@ public class ViewContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_contact);
 
-        this.getSupportActionBar().setTitle("View Contact");
+        // Customizes action bar
+        this.getSupportActionBar().setTitle(R.string.view_contact);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        // Setup view
         setupView();
         setupActivityLauncher();
     }
 
+    /**
+     * Method to setup view for activity
+     * @param: nothing
+     * @return: nothing
+     */
     private void setupView() {
         nameTextView = findViewById(R.id.idNameTextView);
         phoneTextView = findViewById(R.id.idPhoneTextView);
@@ -60,6 +67,9 @@ public class ViewContactActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to setup listeners for all views
+     */
     private void setupButtonListeners() {
         phoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +83,7 @@ public class ViewContactActivity extends AppCompatActivity {
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Intent to push to edit contact view
                 Intent sendIntent = new Intent(Intent.ACTION_VIEW);
                 sendIntent.putExtra("sms_body", "");
                 sendIntent.setType("vnd.android-dir/mms-sms");
@@ -97,12 +108,16 @@ public class ViewContactActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method to setup activity launcher to open edit contact intent and handle callback action
+     */
     private void setupActivityLauncher() {
         editContactActivityLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
+                        // Checks if result is ok or not, if ok then pass it to main activity to save
                         if (result.getResultCode() == R.string.result_ok_update) {
                             Intent data = result.getData();
                             final ContactModel model = (ContactModel) data.getSerializableExtra("NewContactModel");
@@ -115,11 +130,17 @@ public class ViewContactActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * On options item selected for menu of action bar
+     * @param: item: MenuItem
+     * @return: boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.idEditContactMenuItem) {
+            // Intent to launch new contact activity
             Intent createNewContactIntent = new Intent(ViewContactActivity.this, CreateNewContactActivity.class);
             createNewContactIntent.putExtra("ContactModel", contactModel);
             editContactActivityLauncher.launch(createNewContactIntent);
@@ -142,6 +163,11 @@ public class ViewContactActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Creates menu for action bar
+     * @param menu: Menu
+     * @return: boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_contact_menu, menu);
